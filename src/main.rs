@@ -13,72 +13,52 @@ fn main() {
         ))
         .insert_resource(Msaa::Off)
         .add_systems(Startup, (camera::setup_camera, setup_mesh))
-        .add_systems(Update, (rotate, camera::fit_canvas))
+        .add_systems(Update, camera::fit_canvas)
         .run();
 }
-
-#[derive(Component)]
-struct Rotate;
 
 /// Spawns a capsule mesh on the pixel-perfect layer.
 fn setup_mesh(
     mut commands: Commands,
+    asset_server: Res<AssetServer>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    // cube
-    commands.spawn((
-        PbrBundle {
-            mesh: meshes.add(Cuboid::default()),
-            material: materials.add(Color::rgb(0.8, 0.7, 0.6)),
-            transform: Transform::from_xyz(0.0, 0.0, 0.0),
-            ..default()
-        },
-        Rotate,
-        camera::PIXEL_PERFECT_LAYERS,
-    ));
-
-    // desk
-    commands.spawn((
-        PbrBundle {
-            mesh: meshes.add(Cylinder::default()),
-            material: materials.add(Color::rgb(0.5, 0.4, 0.3)),
-            transform: Transform::from_xyz(0.0, -2.0, 0.0).with_scale(Vec3::new(15.0, 0.1, 15.0)),
-            ..default()
-        },
-        camera::PIXEL_PERFECT_LAYERS,
-    ));
-
-    // spotlight
-    commands.spawn(SpotLightBundle {
-        transform: Transform::from_xyz(0.0, 2.0, 0.0).looking_at(Vec3::new(0.0, 0.0, 0.0), Vec3::Y),
-        spot_light: SpotLight {
-            intensity: 4000.0, // lumens
-            color: Color::WHITE,
-            shadows_enabled: true,
-            inner_angle: PI / 4.0 * 0.85,
-            outer_angle: PI / 4.0,
-            ..default()
-        },
+    // Spawn the first scene in `models/SimpleSkin/SimpleSkin.gltf`
+    commands.spawn(SceneBundle {
+        scene: asset_server.load("dollhouse.gltf#Scene0"),
         ..default()
     });
 
-    // light
-    // commands.spawn(DirectionalLightBundle {
-    //     directional_light: DirectionalLight {
-    //         illuminance: 1_000.,
+    // spotlight
+    // commands.spawn(SpotLightBundle {
+    //     transform: Transform::from_xyz(0.0, 20.0, 0.0)
+    //         .looking_at(Vec3::new(0.0, 0.0, 0.0), Vec3::X),
+    //     spot_light: SpotLight {
+    //         intensity: 400000.0, // lumens
+    //         color: Color::WHITE,
+    //         shadows_enabled: true,
+    //         inner_angle: PI / 4.0 * 0.85,
+    //         outer_angle: PI / 4.0,
     //         ..default()
     //     },
     //     ..default()
     // });
-}
 
-/// Rotates entities to demonstrate grid snapping.
-fn rotate(time: Res<Time>, mut transforms: Query<&mut Transform, With<Rotate>>) {
-    for mut transform in &mut transforms {
-        let dt = time.delta_seconds();
-        transform.rotate_z(dt);
-        transform.rotate_x(dt * 0.5);
-        transform.rotate_y(dt * 0.3);
-    }
+    // Light
+    commands.spawn(DirectionalLightBundle {
+        directional_light: DirectionalLight {
+            illuminance: light_consts::lux::AMBIENT_DAYLIGHT,
+            shadows_enabled: true,
+            ..default()
+        },
+        transform: Transform::from_rotation(Quat::from_euler(
+            EulerRot::ZYX,
+            0.0,
+            PI * -0.15,
+            PI * -0.15,
+        ))
+        .into(),
+        ..default()
+    });
 }

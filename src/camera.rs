@@ -70,7 +70,7 @@ pub fn setup_camera(mut commands: Commands, mut images: ResMut<Assets<Image>>) {
     // this camera renders whatever is on `PIXEL_PERFECT_LAYERS` to the canvas
     commands.spawn((
         Camera3dBundle {
-            transform: Transform::from_translation(Vec3::new(0.0, 3.0, 5.0))
+            transform: Transform::from_translation(Vec3::new(0.0, 15.0, 25.0))
                 .looking_at(Vec3::default(), Vec3::Y),
             camera: Camera {
                 order: -1,
