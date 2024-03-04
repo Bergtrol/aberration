@@ -1,6 +1,8 @@
 mod camera;
 mod post_process;
 
+use std::f32::consts::PI;
+
 use bevy::prelude::*;
 
 fn main() {
@@ -29,21 +31,46 @@ fn setup_mesh(
         PbrBundle {
             mesh: meshes.add(Cuboid::default()),
             material: materials.add(Color::rgb(0.8, 0.7, 0.6)),
-            transform: Transform::from_xyz(0.0, 0.5, 0.0),
+            transform: Transform::from_xyz(0.0, 0.0, 0.0),
             ..default()
         },
         Rotate,
         camera::PIXEL_PERFECT_LAYERS,
     ));
 
-    // light
-    commands.spawn(DirectionalLightBundle {
-        directional_light: DirectionalLight {
-            illuminance: 1_000.,
+    // desk
+    commands.spawn((
+        PbrBundle {
+            mesh: meshes.add(Cylinder::default()),
+            material: materials.add(Color::rgb(0.5, 0.4, 0.3)),
+            transform: Transform::from_xyz(0.0, -2.0, 0.0).with_scale(Vec3::new(15.0, 0.1, 15.0)),
+            ..default()
+        },
+        camera::PIXEL_PERFECT_LAYERS,
+    ));
+
+    // spotlight
+    commands.spawn(SpotLightBundle {
+        transform: Transform::from_xyz(0.0, 2.0, 0.0).looking_at(Vec3::new(0.0, 0.0, 0.0), Vec3::Y),
+        spot_light: SpotLight {
+            intensity: 4000.0, // lumens
+            color: Color::WHITE,
+            shadows_enabled: true,
+            inner_angle: PI / 4.0 * 0.85,
+            outer_angle: PI / 4.0,
             ..default()
         },
         ..default()
     });
+
+    // light
+    // commands.spawn(DirectionalLightBundle {
+    //     directional_light: DirectionalLight {
+    //         illuminance: 1_000.,
+    //         ..default()
+    //     },
+    //     ..default()
+    // });
 }
 
 /// Rotates entities to demonstrate grid snapping.

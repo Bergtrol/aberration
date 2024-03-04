@@ -13,10 +13,10 @@ use bevy::{
 };
 
 /// In-game resolution width.
-const RES_WIDTH: u32 = 1600;
+const RES_WIDTH: u32 = 320;
 
 /// In-game resolution height.
-const RES_HEIGHT: u32 = 900;
+const RES_HEIGHT: u32 = 180;
 
 /// Default render layers for pixel-perfect rendering.
 /// You can skip adding this component, as this is the default.
@@ -70,12 +70,12 @@ pub fn setup_camera(mut commands: Commands, mut images: ResMut<Assets<Image>>) {
     // this camera renders whatever is on `PIXEL_PERFECT_LAYERS` to the canvas
     commands.spawn((
         Camera3dBundle {
-            transform: Transform::from_translation(Vec3::new(0.0, 0.0, 5.0))
+            transform: Transform::from_translation(Vec3::new(0.0, 3.0, 5.0))
                 .looking_at(Vec3::default(), Vec3::Y),
             camera: Camera {
                 order: -1,
                 target: RenderTarget::Image(image_handle.clone()),
-                clear_color: Color::WHITE.into(),
+                clear_color: Color::BLACK.into(),
                 ..default()
             },
             ..default()
@@ -83,7 +83,7 @@ pub fn setup_camera(mut commands: Commands, mut images: ResMut<Assets<Image>>) {
         // Add the setting to the camera.
         // This component is also used to determine on which camera to run the post processing effect.
         post_process::PostProcessSettings {
-            intensity: 0.02,
+            intensity: 0.00,
             ..default()
         },
         InGameCamera,
