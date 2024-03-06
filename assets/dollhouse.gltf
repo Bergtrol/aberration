@@ -9,7 +9,8 @@
 			"name":"Scene",
 			"nodes":[
 				0,
-				1
+				1,
+				2
 			]
 		}
 	],
@@ -35,6 +36,15 @@
 				0,
 				-0.23750850558280945,
 				0
+			]
+		},
+		{
+			"mesh":2,
+			"name":"Cube.001",
+			"translation":[
+				-1.074952244758606,
+				1,
+				0.3519687354564667
 			]
 		}
 	],
@@ -93,6 +103,19 @@
 					"material":1
 				}
 			]
+		},
+		{
+			"name":"Cube.001",
+			"primitives":[
+				{
+					"attributes":{
+						"POSITION":8,
+						"NORMAL":9,
+						"TEXCOORD_0":10
+					},
+					"indices":11
+				}
+			]
 		}
 	],
 	"textures":[
@@ -112,14 +135,14 @@
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":65,
+			"count":26,
 			"max":[
 				4,
-				4,
-				1.5763229131698608
+				2,
+				1.2000000476837158
 			],
 			"min":[
-				-1.2000000476837158,
+				1,
 				-1,
 				-1
 			],
@@ -128,19 +151,19 @@
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":65,
+			"count":26,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":65,
+			"count":26,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":3,
 			"componentType":5123,
-			"count":105,
+			"count":42,
 			"type":"SCALAR"
 		},
 		{
@@ -176,55 +199,113 @@
 			"componentType":5123,
 			"count":180,
 			"type":"SCALAR"
+		},
+		{
+			"bufferView":8,
+			"componentType":5126,
+			"count":94,
+			"max":[
+				1,
+				4,
+				1.2999999523162842
+			],
+			"min":[
+				-1,
+				-1,
+				-1.2999999523162842
+			],
+			"type":"VEC3"
+		},
+		{
+			"bufferView":9,
+			"componentType":5126,
+			"count":94,
+			"type":"VEC3"
+		},
+		{
+			"bufferView":10,
+			"componentType":5126,
+			"count":94,
+			"type":"VEC2"
+		},
+		{
+			"bufferView":11,
+			"componentType":5123,
+			"count":156,
+			"type":"SCALAR"
 		}
 	],
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":780,
+			"byteLength":312,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":780,
-			"byteOffset":780,
+			"byteLength":312,
+			"byteOffset":312,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":520,
-			"byteOffset":1560,
+			"byteLength":208,
+			"byteOffset":624,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":210,
-			"byteOffset":2080,
+			"byteLength":84,
+			"byteOffset":832,
 			"target":34963
 		},
 		{
 			"buffer":0,
 			"byteLength":1152,
-			"byteOffset":2292,
+			"byteOffset":916,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":1152,
-			"byteOffset":3444,
+			"byteOffset":2068,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":768,
-			"byteOffset":4596,
+			"byteOffset":3220,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":360,
-			"byteOffset":5364,
+			"byteOffset":3988,
+			"target":34963
+		},
+		{
+			"buffer":0,
+			"byteLength":1128,
+			"byteOffset":4348,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":1128,
+			"byteOffset":5476,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":752,
+			"byteOffset":6604,
+			"target":34962
+		},
+		{
+			"buffer":0,
+			"byteLength":312,
+			"byteOffset":7356,
 			"target":34963
 		}
 	],
@@ -236,7 +317,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":5724,
+			"byteLength":7668,
 			"uri":"dollhouse.bin"
 		}
 	]

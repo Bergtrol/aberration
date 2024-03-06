@@ -1,4 +1,5 @@
 mod camera;
+mod input;
 mod post_process;
 
 use std::f32::consts::PI;
@@ -13,7 +14,13 @@ fn main() {
         ))
         .insert_resource(Msaa::Off)
         .add_systems(Startup, (camera::setup_camera, setup_mesh))
-        .add_systems(Update, camera::fit_canvas)
+        .insert_resource(input::InputState {
+            moving_camera: false,
+        })
+        .add_systems(
+            Update,
+            (camera::fit_canvas, input::mouse_motion, input::grab_mouse),
+        )
         .run();
 }
 
@@ -24,7 +31,7 @@ fn setup_mesh(
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
 ) {
-    // Spawn the first scene in `models/SimpleSkin/SimpleSkin.gltf`
+    // Spawn the first scene
     commands.spawn(SceneBundle {
         scene: asset_server.load("dollhouse.gltf#Scene0"),
         ..default()
