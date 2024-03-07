@@ -25,12 +25,7 @@ fn main() {
 }
 
 /// Spawns a capsule mesh on the pixel-perfect layer.
-fn setup_mesh(
-    mut commands: Commands,
-    asset_server: Res<AssetServer>,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
-) {
+fn setup_mesh(mut commands: Commands, asset_server: Res<AssetServer>) {
     // Spawn the first scene
     commands.spawn(SceneBundle {
         scene: asset_server.load("dollhouse.gltf#Scene0"),
