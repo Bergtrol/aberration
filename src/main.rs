@@ -14,6 +14,10 @@ fn main() {
         ))
         .insert_resource(Msaa::Off)
         .add_systems(Startup, (camera::setup_camera, setup_mesh))
+        .insert_resource(AmbientLight {
+            brightness: 20.0,
+            ..default()
+        })
         .insert_resource(input::InputState {
             moving_camera: false,
             ..default()
@@ -39,34 +43,33 @@ fn setup_mesh(mut commands: Commands, asset_server: Res<AssetServer>) {
     });
 
     // spotlight
-    // commands.spawn(SpotLightBundle {
-    //     transform: Transform::from_xyz(0.0, 20.0, 0.0)
-    //         .looking_at(Vec3::new(0.0, 0.0, 0.0), Vec3::X),
-    //     spot_light: SpotLight {
-    //         intensity: 400000.0, // lumens
-    //         color: Color::WHITE,
-    //         shadows_enabled: true,
-    //         inner_angle: PI / 4.0 * 0.85,
-    //         outer_angle: PI / 4.0,
-    //         ..default()
-    //     },
-    //     ..default()
-    // });
-
-    // Light
-    commands.spawn(DirectionalLightBundle {
-        directional_light: DirectionalLight {
-            illuminance: light_consts::lux::AMBIENT_DAYLIGHT,
+    commands.spawn(SpotLightBundle {
+        transform: Transform::from_xyz(0.0, 7.0, 0.0).looking_at(Vec3::new(0.0, 0.0, 0.0), Vec3::X),
+        spot_light: SpotLight {
+            intensity: 400000.0, // lumens
+            color: Color::WHITE,
             shadows_enabled: true,
+            inner_angle: PI / 4.0 * 0.85,
+            outer_angle: PI / 4.0,
             ..default()
         },
-        transform: Transform::from_rotation(Quat::from_euler(
-            EulerRot::ZYX,
-            0.0,
-            PI * -0.15,
-            PI * -0.15,
-        ))
-        .into(),
         ..default()
     });
+
+    // Light
+    // commands.spawn(DirectionalLightBundle {
+    //     directional_light: DirectionalLight {
+    //         illuminance: light_consts::lux::AMBIENT_DAYLIGHT,
+    //         shadows_enabled: true,
+    //         ..default()
+    //     },
+    //     transform: Transform::from_rotation(Quat::from_euler(
+    //         EulerRot::ZYX,
+    //         0.0,
+    //         PI * -0.15,
+    //         PI * -0.15,
+    //     ))
+    //     .into(),
+    //     ..default()
+    // });
 }

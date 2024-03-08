@@ -84,6 +84,7 @@ pub fn setup_camera(mut commands: Commands, mut images: ResMut<Assets<Image>>) {
                 order: -1,
                 target: RenderTarget::Image(image_handle.clone()),
                 clear_color: Color::BLACK.into(),
+                hdr: true,
                 ..default()
             },
             ..default()
