@@ -16,10 +16,16 @@ fn main() {
         .add_systems(Startup, (camera::setup_camera, setup_mesh))
         .insert_resource(input::InputState {
             moving_camera: false,
+            ..default()
         })
         .add_systems(
             Update,
-            (camera::fit_canvas, input::mouse_motion, input::grab_mouse),
+            (
+                camera::fit_canvas,
+                input::mouse_motion,
+                input::grab_mouse,
+                camera::orbit_camera.after(input::mouse_motion),
+            ),
         )
         .run();
 }

@@ -4,26 +4,46 @@ use bevy::{
         system::{Query, Res, ResMut, Resource},
     },
     input::{
-        mouse::{MouseButton, MouseMotion},
+        mouse::{MouseButton, MouseMotion, MouseWheel},
         ButtonInput,
     },
     window::{CursorGrabMode, Window},
 };
 
-#[derive(Resource)]
+#[derive(Resource, Default)]
 pub struct InputState {
     pub moving_camera: bool,
+    pub delta_x: f32,
+    pub delta_y: f32,
+    pub delta_zoom: f32,
 }
 
-pub fn mouse_motion(mut motion_evr: EventReader<MouseMotion>, input_state: Res<InputState>) {
+pub fn mouse_motion(
+    mut motion_evr: EventReader<MouseMotion>,
+    mut mouse_wheel_events: EventReader<MouseWheel>,
+    mut input_state: ResMut<InputState>,
+) {
     if input_state.moving_camera == true {
         for event in motion_evr.read() {
-            println!(
-                "Mouse moved: X: {} px, Y: {} px",
-                event.delta.x, event.delta.y
-            );
+            input_state.delta_x = event.delta.x;
+            input_state.delta_y = event.delta.y;
         }
+
+        //decay the input
+        input_state.delta_x *= 0.5;
+        input_state.delta_y *= 0.5;
+    } else {
+        input_state.delta_x = 0.0;
+        input_state.delta_y = 0.0;
+        input_state.delta_zoom = 0.0;
     }
+
+    // zooming should happen regardless of if we're grabbed or not
+    for event in mouse_wheel_events.read() {
+        input_state.delta_zoom = event.y;
+    }
+
+    input_state.delta_zoom *= 0.5;
 }
 
 // This system grabs the mouse when the left mouse button is pressed

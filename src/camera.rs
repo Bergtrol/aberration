@@ -1,4 +1,6 @@
-use crate::post_process;
+use std::f32::consts::PI;
+
+use crate::{input::InputState, post_process};
 
 use bevy::{
     prelude::*,
@@ -25,6 +27,8 @@ pub const PIXEL_PERFECT_LAYERS: RenderLayers = RenderLayers::layer(0);
 /// Render layers for high-resolution rendering.
 const HIGH_RES_LAYERS: RenderLayers = RenderLayers::layer(1);
 
+const ZOOM_SPEED: f32 = 50.0;
+
 /// Low-resolution texture that contains the pixel-perfect world.
 /// Canvas itself is rendered to the high-resolution world.
 #[derive(Component)]
@@ -32,7 +36,11 @@ struct Canvas;
 
 /// Camera that renders the pixel-perfect world to the [`Canvas`].
 #[derive(Component)]
-struct InGameCamera;
+pub struct InGameCamera {
+    pub angle_x: f32,
+    pub angle_y: f32,
+    pub zoom: f32,
+}
 
 /// Camera that renders the [`Canvas`] (and other graphics on [`HIGH_RES_LAYERS`]) to the screen.
 #[derive(Component)]
@@ -86,7 +94,11 @@ pub fn setup_camera(mut commands: Commands, mut images: ResMut<Assets<Image>>) {
             intensity: 0.00,
             ..default()
         },
-        InGameCamera,
+        InGameCamera {
+            angle_x: 0.0,
+            angle_y: 0.0,
+            zoom: 25.0,
+        },
         PIXEL_PERFECT_LAYERS,
     ));
 
@@ -115,5 +127,42 @@ pub fn fit_canvas(
         let v_scale = event.height / RES_HEIGHT as f32;
         let mut projection = projections.single_mut();
         projection.scale = 1. / h_scale.min(v_scale).round();
+    }
+}
+
+pub fn orbit_camera(
+    time: Res<Time>,
+    input_state: Res<InputState>,
+    mut camera_q: Query<(&mut Transform, &mut InGameCamera)>,
+) {
+    for (mut transform, mut in_game_camera) in &mut camera_q {
+        in_game_camera.angle_x -= input_state.delta_x * time.delta_seconds();
+
+        in_game_camera.angle_y -= input_state.delta_y * time.delta_seconds();
+        if in_game_camera.angle_y > 0.0 {
+            in_game_camera.angle_y = 0.0;
+        }
+        if in_game_camera.angle_y < -PI {
+            in_game_camera.angle_y = -PI;
+        }
+
+        in_game_camera.zoom -= input_state.delta_zoom * time.delta_seconds() * ZOOM_SPEED;
+        if in_game_camera.zoom < 5.0 {
+            in_game_camera.zoom = 5.0;
+        }
+        if in_game_camera.zoom > 25.0 {
+            in_game_camera.zoom = 25.0;
+        }
+        println!("{0}", in_game_camera.zoom);
+
+        *transform = Transform::from_translation(Vec3::new(0.0, 0.0, in_game_camera.zoom));
+        transform.rotate_around(
+            Vec3::ZERO,
+            Quat::from_axis_angle(Vec3::X, in_game_camera.angle_y),
+        );
+        transform.rotate_around(
+            Vec3::ZERO,
+            Quat::from_axis_angle(Vec3::Y, in_game_camera.angle_x),
+        );
     }
 }
