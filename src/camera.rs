@@ -27,7 +27,7 @@ pub const PIXEL_PERFECT_LAYERS: RenderLayers = RenderLayers::layer(0);
 /// Render layers for high-resolution rendering.
 const HIGH_RES_LAYERS: RenderLayers = RenderLayers::layer(1);
 
-const ZOOM_SPEED: f32 = 50.0;
+const ZOOM_SPEED: f32 = 100.0;
 
 /// Low-resolution texture that contains the pixel-perfect world.
 /// Canvas itself is rendered to the high-resolution world.
@@ -154,7 +154,6 @@ pub fn orbit_camera(
         if in_game_camera.zoom > 25.0 {
             in_game_camera.zoom = 25.0;
         }
-        println!("{0}", in_game_camera.zoom);
 
         *transform = Transform::from_translation(Vec3::new(0.0, 0.0, in_game_camera.zoom));
         transform.rotate_around(

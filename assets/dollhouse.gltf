@@ -17,7 +17,7 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"Cube",
+			"name":"short-half",
 			"translation":[
 				-0.6711159348487854,
 				0.9899915456771851,
@@ -26,7 +26,7 @@
 		},
 		{
 			"mesh":1,
-			"name":"Cylinder",
+			"name":"floor",
 			"scale":[
 				15.746217727661133,
 				0.2250114232301712,
@@ -40,7 +40,7 @@
 		},
 		{
 			"mesh":2,
-			"name":"Cube.001",
+			"name":"tall-half",
 			"translation":[
 				-1.074952244758606,
 				1,
@@ -77,7 +77,7 @@
 	],
 	"meshes":[
 		{
-			"name":"Cube",
+			"name":"short-half",
 			"primitives":[
 				{
 					"attributes":{
@@ -91,7 +91,7 @@
 			]
 		},
 		{
-			"name":"Cylinder",
+			"name":"floor",
 			"primitives":[
 				{
 					"attributes":{
@@ -105,7 +105,7 @@
 			]
 		},
 		{
-			"name":"Cube.001",
+			"name":"tall-half",
 			"primitives":[
 				{
 					"attributes":{
@@ -203,7 +203,7 @@
 		{
 			"bufferView":8,
 			"componentType":5126,
-			"count":94,
+			"count":85,
 			"max":[
 				1,
 				4,
@@ -219,13 +219,13 @@
 		{
 			"bufferView":9,
 			"componentType":5126,
-			"count":94,
+			"count":85,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":10,
 			"componentType":5126,
-			"count":94,
+			"count":85,
 			"type":"VEC2"
 		},
 		{
@@ -286,26 +286,26 @@
 		},
 		{
 			"buffer":0,
-			"byteLength":1128,
+			"byteLength":1020,
 			"byteOffset":4348,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":1128,
-			"byteOffset":5476,
+			"byteLength":1020,
+			"byteOffset":5368,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":752,
-			"byteOffset":6604,
+			"byteLength":680,
+			"byteOffset":6388,
 			"target":34962
 		},
 		{
 			"buffer":0,
 			"byteLength":312,
-			"byteOffset":7356,
+			"byteOffset":7068,
 			"target":34963
 		}
 	],
@@ -317,7 +317,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":7668,
+			"byteLength":7380,
 			"uri":"dollhouse.bin"
 		}
 	]

@@ -29,18 +29,21 @@ fn main() {
                 input::mouse_motion,
                 input::grab_mouse,
                 camera::orbit_camera.after(input::mouse_motion),
+                report_entities.after(setup_mesh),
             ),
         )
         .run();
 }
 
-/// Spawns a capsule mesh on the pixel-perfect layer.
 fn setup_mesh(mut commands: Commands, asset_server: Res<AssetServer>) {
     // Spawn the first scene
-    commands.spawn(SceneBundle {
-        scene: asset_server.load("dollhouse.gltf#Scene0"),
-        ..default()
-    });
+    commands.spawn((
+        SceneBundle {
+            scene: asset_server.load("dollhouse.gltf#Scene0"),
+            ..default()
+        },
+        Reportable,
+    ));
 
     // spotlight
     commands.spawn(SpotLightBundle {
@@ -72,4 +75,21 @@ fn setup_mesh(mut commands: Commands, asset_server: Res<AssetServer>) {
     //     .into(),
     //     ..default()
     // });
+}
+
+#[derive(Component)]
+struct Reportable;
+
+fn report_entities(
+    moved_scene: Query<Entity, With<Reportable>>,
+    children: Query<&Children>,
+    names: Query<&Name>,
+) {
+    for reported_scene_entity in &moved_scene {
+        for entity in children.iter_descendants(reported_scene_entity) {
+            if let Ok(name) = names.get(entity) {
+                println!("{}", name.as_str())
+            }
+        }
+    }
 }
